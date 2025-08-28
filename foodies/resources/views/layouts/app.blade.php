@@ -1,45 +1,47 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecommerce System</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    @livewireStyles
+</head>
+<body class="bg-gray-100">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+    <!-- Navbar -->
+    <nav class="bg-gray-800 text-white p-4 flex justify-between items-center">
+        <!-- Logo / Brand -->
+        <a href="{{ route('home') }}" class="font-bold text-xl">Ecommerce</a>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-        <!-- Styles -->
-        @livewireStyles
-    </head>
-    <body class="font-sans antialiased">
-        <x-banner />
-
-        <div class="min-h-screen bg-gray-100">
-            @livewire('navigation-menu')
-
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
-
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+        <!-- Links -->
+        <div class="space-x-4">
+            <a href="{{ route('home') }}" class="hover:text-gray-300">Home</a>
+            <a href="{{ route('products') }}" class="hover:text-gray-300">Products</a>
+            
+            @auth
+                <a href="{{ route('cart') }}" class="hover:text-gray-300">Cart</a>
+                <a href="{{ route('orders') }}" class="hover:text-gray-300">Orders</a>
+                <a href="{{ route('profile') }}" class="hover:text-gray-300">Profile</a>
+                
+                <!-- Logout Form -->
+                <form action="{{ route('logout') }}" method="POST" class="inline">
+                    @csrf
+                    <button type="submit" class="hover:text-gray-300">Logout</button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="hover:text-gray-300">Login</a>
+                <a href="{{ route('register') }}" class="hover:text-gray-300">Register</a>
+            @endauth
         </div>
+    </nav>
 
-        @stack('modals')
+    <!-- Main Content -->
+    <main class="p-6">
+        @yield('content')
+    </main>
 
-        @livewireScripts
-    </body>
+    @livewireScripts
+</body>
 </html>
